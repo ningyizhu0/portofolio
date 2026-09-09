@@ -317,6 +317,37 @@ function useScrollProgress() {
 
 /* ------------------------------- components ------------------------------- */
 
+function getInitialTheme() {
+  if (typeof document !== 'undefined' && document.documentElement.dataset.theme) {
+    return document.documentElement.dataset.theme
+  }
+
+  if (typeof window !== 'undefined') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  return 'light'
+}
+
+function ThemeToggle({ theme, onToggle }) {
+  const nextTheme = theme === 'dark' ? 'light' : 'dark'
+
+  return (
+    <button
+      type="button"
+      className="theme-toggle"
+      onClick={onToggle}
+      aria-label={`Switch to ${nextTheme} mode`}
+      title={`Switch to ${nextTheme} mode`}
+    >
+      <span className="theme-toggle__icon" aria-hidden="true">
+        {theme === 'dark' ? '☀' : '☾'}
+      </span>
+      <span className="theme-toggle__label">{nextTheme} mode</span>
+    </button>
+  )
+}
+
 function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
   const [ref, visible] = useReveal()
   return (
@@ -630,8 +661,29 @@ function Contact() {
 /* ---------------------------------- app ----------------------------------- */
 
 export default function App() {
+  const [theme, setTheme] = useState(getInitialTheme)
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    document.documentElement.style.colorScheme = theme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute(
+      'content',
+      theme === 'dark' ? '#0a0a0a' : '#f4f2ec',
+    )
+
+    try {
+      localStorage.setItem('portfolio-theme', theme)
+    } catch {
+      // The theme still works when browser storage is unavailable.
+    }
+  }, [theme])
+
   return (
     <main className="page">
+      <ThemeToggle
+        theme={theme}
+        onToggle={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))}
+      />
       <div className="grain" aria-hidden="true" />
       <div className="grid-lines" aria-hidden="true">
         <span /><span /><span /><span />
