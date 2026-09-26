@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import cvUrl from '../Dennis_Hans_Albertian_CV.pdf'
 
 /* ---------------------------------- data ---------------------------------- */
 
@@ -38,7 +39,6 @@ const EDUCATION = [
     period: 'Aug 2020 — Apr 2024',
     note: 'Honors: Cum Laude — Graduated with Honors.',
     tag: 'S.Kom.',
-    highlight: true,
   },
 ]
 
@@ -277,7 +277,7 @@ const SKILLS = [
 
 /* -------------------------------- utilities ------------------------------- */
 
-function useReveal(options = {}) {
+function useReveal() {
   const ref = useRef(null)
   const [visible, setVisible] = useState(false)
 
@@ -291,11 +291,11 @@ function useReveal(options = {}) {
           observer.disconnect()
         }
       },
-      { threshold: options.threshold ?? 0.15, rootMargin: options.rootMargin ?? '0px 0px -8% 0px' },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' },
     )
     observer.observe(el)
     return () => observer.disconnect()
-  }, [options.threshold, options.rootMargin])
+  }, [])
 
   return [ref, visible]
 }
@@ -317,18 +317,6 @@ function useScrollProgress() {
 
 /* ------------------------------- components ------------------------------- */
 
-function getInitialTheme() {
-  if (typeof document !== 'undefined' && document.documentElement.dataset.theme) {
-    return document.documentElement.dataset.theme
-  }
-
-  if (typeof window !== 'undefined') {
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  }
-
-  return 'light'
-}
-
 function ThemeToggle({ theme, onToggle }) {
   const nextTheme = theme === 'dark' ? 'light' : 'dark'
 
@@ -348,16 +336,16 @@ function ThemeToggle({ theme, onToggle }) {
   )
 }
 
-function Reveal({ children, className = '', delay = 0, as: Tag = 'div' }) {
+function Reveal({ children, className = '', delay = 0 }) {
   const [ref, visible] = useReveal()
   return (
-    <Tag
+    <div
       ref={ref}
       className={`reveal ${visible ? 'is-visible' : ''} ${className}`}
       style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
-    </Tag>
+    </div>
   )
 }
 
@@ -423,6 +411,9 @@ function Hero() {
             Creative & detail-oriented systems thinker bridging design aesthetics with marketing
             strategy to craft audience-driven stories.
           </p>
+          <a className="hero__cv" href={cvUrl} download="Dennis_Hans_Albertian_CV.pdf">
+            DOWNLOAD CV ↓
+          </a>
         </Reveal>
         <Reveal className="hero__scroll" delay={400}>
           <span className="hero__scroll-text">SCROLL TO EXPLORE</span>
@@ -661,7 +652,7 @@ function Contact() {
 /* ---------------------------------- app ----------------------------------- */
 
 export default function App() {
-  const [theme, setTheme] = useState(getInitialTheme)
+  const [theme, setTheme] = useState(document.documentElement.dataset.theme || 'light')
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme

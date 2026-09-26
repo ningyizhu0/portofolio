@@ -8,7 +8,6 @@
   --paper: #f4f2ec;
   --gray: #6f6d66;
   --line-dark: rgba(10, 10, 10, 0.16);
-  --line-light: rgba(10, 10, 10, 0.16);
   --font-mono: 'Space Mono', 'Courier New', monospace;
   --font-sans: 'Google Sans', system-ui, -apple-system, sans-serif;
   --pad: clamp(1.25rem, 6vw, 6rem);
@@ -20,7 +19,6 @@
   --paper: #0a0a0a;
   --gray: #aaa79e;
   --line-dark: rgba(244, 242, 236, 0.2);
-  --line-light: rgba(244, 242, 236, 0.2);
 }
 
 * {
@@ -276,6 +274,24 @@ img {
   font-weight: 300;
 }
 
+.hero__cv {
+  display: inline-flex;
+  margin-top: 1.5rem;
+  padding: 0.8rem 1.2rem;
+  border: 1px solid var(--line-dark);
+  border-radius: 100px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  transition: background 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.hero__cv:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
 .hero__scroll {
   font-family: var(--font-mono);
   font-size: 0.72rem;
@@ -348,11 +364,7 @@ img {
   padding: clamp(3.2rem, 6vw, 5.1rem) var(--pad);
 }
 
-.section--light {
-  background: var(--paper);
-  color: var(--ink);
-}
-
+.section--light,
 .section--dark {
   background: var(--paper);
   color: var(--ink);
@@ -486,7 +498,7 @@ img {
   font-size: 0.62rem;
   letter-spacing: 0.2em;
   opacity: 0.55;
-  border: 1px solid var(--line-light);
+  border: 1px solid var(--line-dark);
   border-radius: 100px;
   padding: 0.35em 0.9em;
   white-space: nowrap;
