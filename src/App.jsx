@@ -635,8 +635,10 @@ function Contact() {
           </a>
         </Reveal>
         <Reveal className="contact__cell" delay={260}>
-          <span className="contact__label">LOCATION</span>
-          <span>Malang, East Java, ID</span>
+          <span className="contact__label">DISCORD</span>
+          <a href="https://discord.com/users/1328286855573012522" target="_blank" rel="noreferrer">
+            awwmn ↗
+          </a>
         </Reveal>
       </div>
       <div className="footer">
